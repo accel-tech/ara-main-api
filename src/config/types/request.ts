@@ -1,0 +1,31 @@
+import { NextFunction, Request, Response } from "express";
+import { ClientSession, FilterQuery, QueryOptions } from "mongoose";
+import { Filter, FindOptions } from "mongodb";
+import { IUser } from "./user";
+
+export interface xRequest extends Request {
+  purpose?: string;
+  user?: reqUser;
+  session?: ClientSession;
+  qOptions?: FindOptions;
+  qFilter?: Filter<any>;
+  // qOptions?: QueryOptions;
+  // qFilter?: Filter<any>;
+  projectId?: string;
+}
+
+export type reqUser =
+  | Pick<IUser & { role: "admin" }, "_id" | "name" | "email" | "role">
+  | Pick<IUser & { role: "basic" }, "_id" | "name" | "email" | "role">;
+
+export type xRequestHandler = (
+  req: xRequest,
+  res: Response,
+  next: NextFunction
+) => any | Promise<any>;
+
+export type handler = (req: xRequest) => Promise<object> | object;
+
+export type ServiceResponse<T> =
+  | { success: true; data: T; error: undefined }
+  | { success: false; data: undefined; error: object };
