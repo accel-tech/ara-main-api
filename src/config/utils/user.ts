@@ -1,6 +1,7 @@
 import { KeycloakResponse } from "../types/keycloak";
 import { reqUser } from "../types/request";
-import { User } from "../types/user";
+import { IUser, User } from "../types/user";
+import assert from "assert";
 
 export const getKeycloakReqUser = async (sub: string): Promise<reqUser | undefined> => {
   // get cached
@@ -11,7 +12,8 @@ export const getKeycloakReqUser = async (sub: string): Promise<reqUser | undefin
       _id: user._id,
       name: user.name,
       email: user.email,
-      role: user.role
+      role: user.role,
+      departmentAccess: user.departmentAccess
     };
   }
 
@@ -49,26 +51,34 @@ export const createKeycloakUser = async (
       role: "admin"
     });
 
+    assert(user.role === "admin");
+
     return {
       _id: user._id,
-      name: keycloakData.name,
-      email: keycloakData.email,
-      role: "admin"
+      name: user.name,
+      email: user.email,
+      role: user.role
     };
   }
 
   // create regular user
   else {
-    const user = await User.create({
+    const createData: Omit<IUser & { role: "basic" }, "_id" | "__v"> = {
       ...genericData,
-      role: "basic"
-    });
+      role: "basic",
+      departmentAccess: []
+    };
+    const user = await User.create(createData);
+
+    assert(user.role === "basic");
 
     return {
       _id: user._id,
-      name: keycloakData.name,
-      email: keycloakData.email,
-      role: "basic"
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      // @ts-ignore
+      departmentAccess: user.departmentAccess
     };
   }
 };

@@ -16,7 +16,7 @@ export interface xRequest extends Request {
 
 export type reqUser =
   | Pick<IUser & { role: "admin" }, "_id" | "name" | "email" | "role">
-  | Pick<IUser & { role: "basic" }, "_id" | "name" | "email" | "role">;
+  | Pick<IUser & { role: "basic" }, "_id" | "name" | "email" | "role" | "departmentAccess">;
 
 export type xRequestHandler = (
   req: xRequest,

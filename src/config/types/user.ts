@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { getModel } from "../utils/mongo";
 import { Doc } from "./doc";
 
@@ -15,6 +16,12 @@ interface Admin extends BaseUser {
 
 interface Basic extends BaseUser {
   role: "basic";
+  departmentAccess: {
+    _id: ObjectId;
+    title: string;
+    category: string;
+    access: "member" | "lead";
+  }[];
 }
 
 export type IUser = Admin | Basic;
