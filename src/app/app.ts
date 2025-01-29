@@ -14,6 +14,7 @@ app.use(cors(getCorsOptions()));
 app.use("/auth", require("./auth/routes").default);
 app.use("/departments", require("./departments/routes").default);
 app.use("/users", require("./users/routes").default);
+app.use("/reports", require("./reports/routes").default);
 
 app.use(errorHandler);
 

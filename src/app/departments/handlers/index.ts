@@ -11,7 +11,6 @@ import { createDepartment } from "../services/createDepartment";
 export class DepartmentHandlers {
   @httpHandler("Get Departments")
   static getDepartments: handler = async (req) => {
-    const user = ensureValue(req.user);
     return await getDepartments(req.qFilter, req.qOptions);
   };
 

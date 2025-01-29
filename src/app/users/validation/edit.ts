@@ -14,7 +14,7 @@ export const validateEditUser = (data: any) => {
         _id: Joi.string().required(),
         title: Joi.string(),
         category: Joi.string(),
-        access: Joi.string().required().valid("member", "lead")
+        access: Joi.string().required().valid("member", "lead", "supervisor")
       })
     )
   });

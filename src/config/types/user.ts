@@ -20,7 +20,7 @@ interface Basic extends BaseUser {
     _id: ObjectId;
     title: string;
     category: string;
-    access: "member" | "lead";
+    access: "member" | "lead" | "supervisor";
   }[];
 }
 

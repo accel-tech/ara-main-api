@@ -1,0 +1,15 @@
+import { Router } from "express";
+import { checkAuth } from "../../../config/middlewares/checkAuth";
+import { requiresAuth } from "../../../config/middlewares/requiresAuth";
+import { requiresRoles } from "../../../config/middlewares/requiresRoles";
+import { ReportHandlers } from "../handlers";
+import { parseQuery } from "../../../config/middlewares/parseQuery";
+
+const router = Router();
+router.use(checkAuth, requiresAuth);
+
+router.get("/", requiresRoles("admin"), ReportHandlers.getReports);
+router.get("/find", parseQuery, ReportHandlers.findReport);
+router.get("/:id", requiresRoles("admin"), ReportHandlers.getReport);
+
+export default router;

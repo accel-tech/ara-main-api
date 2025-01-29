@@ -1,6 +1,5 @@
 import { getModel } from "../utils/mongo";
 import { Doc } from "./doc";
-import { IUser } from "./user";
 
 export interface IDepartment extends Doc {
   title: string;
