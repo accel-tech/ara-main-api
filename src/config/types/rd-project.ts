@@ -36,7 +36,11 @@ export interface IRDProject extends Doc {
     name: string;
     email: string;
   };
-  dateCompleted?: Date;
+  department: {
+    _id: ObjectId;
+    title: string;
+  };
+  dateClosed?: Date;
 }
 
 export const RDProject = getModel<IRDProject, IRDProject>("rd-projects");

@@ -7,7 +7,6 @@ import { getReports } from "./getReports";
 export const findReport = async (queryParams: Record<string, string>, user: reqUser) => {
   const departmentId = queryParams.departmentId;
   const date = queryParams.date;
-  const upsert = queryParams.upsert;
 
   const filter: Filter<IReport> = {};
   const options: FindOptions = {};
@@ -24,22 +23,6 @@ export const findReport = async (queryParams: Record<string, string>, user: reqU
   }
 
   const reports = await getReports(filter, options, user);
-  let report = reports[0];
 
-  if (report) return report;
-
-  // if no upsert
-  if (!upsert) return null;
-
-  // if upsert but user is basic and doesn't have lead access in department;
-  if (
-    user.role === "basic" &&
-    !user.departmentAccess.some(
-      (dep) => dep._id.toString() === departmentId && dep.access === "lead"
-    )
-  ) {
-    return null;
-  }
-
-  // create report;
+  return reports[0] || null;
 };

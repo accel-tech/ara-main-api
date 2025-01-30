@@ -6,12 +6,8 @@ import { RDMetrics } from "./rd-metrics";
 import { RDCertifications } from "./rd-certification";
 import { IDepartment } from "./department";
 
-interface RDReport extends Doc {
-  name: string;
+interface RDReport {
   kind: "r&d";
-  dateCreated: Date;
-  coveringDates: { from: Date; to: Date };
-  datePublished?: Date;
   projects: Array<Pick<IRDProject, "_id" | "title" | "description" | "overseer"> & RDProjectData>;
   notes: Array<{
     text: string;
@@ -20,9 +16,18 @@ interface RDReport extends Doc {
   }>;
   metrics: RDMetrics;
   certifications: RDCertifications;
+}
+
+type ReportStatus = { status: "draft" } | { status: "published"; datePublished: Date };
+
+interface GenericReport extends Doc {
+  title: string;
+  dateCreated: Date;
+  coveringDates: { from: Date; to: Date };
   department: Pick<IDepartment, "_id" | "title">;
 }
 
-export type IReport = RDReport;
+type IRDReport = RDReport & ReportStatus & GenericReport;
+export type IReport = IRDReport;
 
 export const Report = getModel<IReport, IReport>("reports");

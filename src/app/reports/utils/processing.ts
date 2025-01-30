@@ -3,12 +3,17 @@ import { IReport } from "../../../config/types/report";
 import { reqUser } from "../../../config/types/request";
 
 export function processReportFilters(initialFilters: Record<string, string>, user: reqUser) {
-  const filter: Filter<IReport> = { ...initialFilters, $and: [] };
+  const filter: Filter<IReport> = { ...initialFilters };
 
   if (user.role === "basic") {
-    filter.$and = [
-      ...filter.$and!,
-      { "department._id": { $in: user.departmentAccess.map((dap) => dap._id) } }
+    filter.$or ??= [];
+    // @ts-ignore
+    filter.$or = [
+      ...filter.$or!,
+      ...user.departmentAccess.map((dep) => ({
+        "department._id": dep._id,
+        status: dep.access === "supervisor" ? "published" : { $exists: true }
+      }))
     ];
   }
 

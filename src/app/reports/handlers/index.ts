@@ -6,6 +6,7 @@ import { httpHandler } from "../../../config/http/httpHandler";
 import { getReports } from "../services/getReports";
 import ClientError from "../../../config/errors/ClientError";
 import { findReport } from "../services/findReport";
+import { createReport } from "../services/createReport";
 
 export class ReportHandlers {
   @httpHandler("Get Reports")
@@ -29,5 +30,10 @@ export class ReportHandlers {
   @httpHandler("Find Report")
   static findReport: handler = async (req) => {
     return await findReport(ensureValue(req.qFilter), ensureValue(req.user));
+  };
+
+  @httpHandler("Create Report")
+  static createReport: handler = async (req) => {
+    return await createReport(ensureValue(req.body), ensureValue(req.user));
   };
 }
