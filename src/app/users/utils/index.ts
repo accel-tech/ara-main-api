@@ -38,7 +38,7 @@ export const validateEditDepartmentAccess = async (
         {
           _id: { $ne: userId },
           role: "basic",
-          departmentAccess: { $elemMatch: { _id: department._id, role: "lead" } }
+          departmentAccess: { $elemMatch: { _id: department._id, access: "lead" } }
         },
         { projection: { _id: 1, name: 1 } }
       );

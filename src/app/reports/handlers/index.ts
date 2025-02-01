@@ -4,7 +4,6 @@ import { ensureValue } from "../../../config/utils/misc";
 import NotFoundError from "../../../config/errors/NotFoundError";
 import { httpHandler } from "../../../config/http/httpHandler";
 import { getReports } from "../services/getReports";
-import ClientError from "../../../config/errors/ClientError";
 import { findReport } from "../services/findReport";
 import { createReport } from "../services/createReport";
 

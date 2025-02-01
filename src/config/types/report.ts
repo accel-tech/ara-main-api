@@ -5,11 +5,13 @@ import { IUser } from "./user";
 import { RDMetrics } from "./rd-metrics";
 import { RDCertifications } from "./rd-certification";
 import { IDepartment } from "./department";
+import { ObjectId } from "mongodb";
 
 interface RDReport {
   kind: "r&d";
   projects: Array<Pick<IRDProject, "_id" | "title" | "description" | "overseer"> & RDProjectData>;
   notes: Array<{
+    _id: ObjectId;
     text: string;
     dateAdded: Date;
     addedBy: Pick<IUser, "_id" | "name" | "email">;

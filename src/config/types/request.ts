@@ -2,15 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import { ClientSession, FilterQuery, QueryOptions } from "mongoose";
 import { Filter, FindOptions } from "mongodb";
 import { IUser } from "./user";
+import { IReport } from "./report";
 
 export interface xRequest extends Request {
   purpose?: string;
   user?: reqUser;
+  document?: { kind: "report"; object: IReport };
   session?: ClientSession;
   qOptions?: FindOptions;
   qFilter?: Filter<any>;
-  // qOptions?: QueryOptions;
-  // qFilter?: Filter<any>;
   projectId?: string;
 }
 
