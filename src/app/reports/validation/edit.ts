@@ -1,10 +1,6 @@
 import Joi from "joi";
-import { IReport } from "../../../config/types/report";
 
-export const validateEditMetrics = (data: unknown) => {
-  const schema = Joi.object<Partial<IReport["metrics"]>>({
-    origins_cpu: Joi.number(),
-    origins_memory: Joi.number()
-  });
+export const validateEditReport = (data: unknown) => {
+  const schema = Joi.object({}); // status?
   return schema.validateAsync(data);
 };

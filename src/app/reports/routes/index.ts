@@ -6,7 +6,9 @@ import { ReportHandlers } from "../handlers";
 import { parseQuery } from "../../../config/middlewares/parseQuery";
 import { parseBody } from "../../../config/middlewares/parseBody";
 import { requiresReportAccess } from "../middleware/requiresReportAccess";
+
 import reportNoteRouter from "../_notes/router";
+import reportMetricsRouter from "../_metrics/router";
 
 const router = Router();
 router.use(checkAuth, requiresAuth);
@@ -18,5 +20,6 @@ router.post("/", parseBody, ReportHandlers.createReport);
 
 //
 router.use("/:id/notes", requiresReportAccess("member", "lead"), reportNoteRouter);
+router.use("/:id/metrics", requiresReportAccess("lead"), reportMetricsRouter);
 
 export default router;
