@@ -9,6 +9,7 @@ import { requiresReportAccess } from "../middleware/requiresReportAccess";
 
 import reportNoteRouter from "../_notes/router";
 import reportMetricsRouter from "../_metrics/router";
+import reportCertificationsRouter from "../_certifications/router";
 
 const router = Router();
 router.use(checkAuth, requiresAuth);
@@ -21,5 +22,10 @@ router.post("/", parseBody, ReportHandlers.createReport);
 //
 router.use("/:id/notes", requiresReportAccess("member", "lead"), reportNoteRouter);
 router.use("/:id/metrics", requiresReportAccess("lead"), reportMetricsRouter);
+router.use(
+  "/:id/certifications",
+  requiresReportAccess("member", "lead"),
+  reportCertificationsRouter
+);
 
 export default router;

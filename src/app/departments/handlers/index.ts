@@ -7,6 +7,7 @@ import { getDepartments } from "../services/getDepartments";
 
 import { editDepartment } from "../services/editDepartment";
 import { createDepartment } from "../services/createDepartment";
+import { getDepartmentMembers } from "../services/getDepartmentMembers";
 
 export class DepartmentHandlers {
   @httpHandler("Get Departments")
@@ -34,5 +35,10 @@ export class DepartmentHandlers {
   @httpHandler("Edit Department", 202)
   static editDepartment: handler = async (req) => {
     return await editDepartment(ensureValue(req.params.id), req.body);
+  };
+
+  @httpHandler("Get Department Members")
+  static getDepartmentMembers: handler = async (req) => {
+    return await getDepartmentMembers(ensureValue(req.params.id));
   };
 }

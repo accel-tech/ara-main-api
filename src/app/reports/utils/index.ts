@@ -47,10 +47,7 @@ export const newReport = async (
       origins_cpu: 0,
       origins_memory: 0
     },
-    certifications: {
-      completed: [],
-      projected: []
-    }
+    certifications: []
   });
 };
 

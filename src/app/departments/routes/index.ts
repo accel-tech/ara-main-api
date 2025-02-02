@@ -5,13 +5,20 @@ import { DepartmentHandlers } from "../handlers";
 import { parseBody } from "../../../config/middlewares/parseBody";
 import { usesTransaction } from "../../../config/utils/mongo";
 import { requiresRoles } from "../../../config/middlewares/requiresRoles";
+import { requiresDepartmentAccess } from "../middlewares/requiresDepartmentAccess";
 
 const router = Router();
-router.use(checkAuth, requiresAuth, requiresRoles("admin"));
+router.use(checkAuth, requiresAuth);
 
-router.get("/", DepartmentHandlers.getDepartments);
-router.post("/", parseBody, DepartmentHandlers.createDepartment);
-router.get("/:id", DepartmentHandlers.getDepartment);
-router.patch("/:id", parseBody, DepartmentHandlers.editDepartment);
+router.get("/", requiresRoles("admin"), DepartmentHandlers.getDepartments);
+router.post("/", requiresRoles("admin"), parseBody, DepartmentHandlers.createDepartment);
+router.get("/:id", requiresDepartmentAccess("lead"), DepartmentHandlers.getDepartment);
+router.patch("/:id", requiresRoles("admin"), parseBody, DepartmentHandlers.editDepartment);
+
+router.get(
+  "/:id/members",
+  requiresDepartmentAccess("lead"),
+  DepartmentHandlers.getDepartmentMembers
+);
 
 export default router;
