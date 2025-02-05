@@ -15,6 +15,7 @@ app.use("/auth", require("./auth/routes").default);
 app.use("/departments", require("./departments/routes").default);
 app.use("/users", require("./users/routes").default);
 app.use("/reports", require("./reports/routes").default);
+app.use("/certifications", require("./certifications/routes").default);
 
 app.use(errorHandler);
 

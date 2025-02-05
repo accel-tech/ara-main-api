@@ -3,11 +3,14 @@ import { ClientSession, FilterQuery, QueryOptions } from "mongoose";
 import { Filter, FindOptions } from "mongodb";
 import { IUser } from "./user";
 import { IReport } from "./report";
+import { ICertification } from "./certification";
 
 export interface xRequest extends Request {
   purpose?: string;
   user?: reqUser;
-  document?: { kind: "report"; object: IReport };
+  document?:
+    | { kind: "report"; object: IReport }
+    | { kind: "certification"; object: ICertification };
   session?: ClientSession;
   qOptions?: FindOptions;
   qFilter?: Filter<any>;

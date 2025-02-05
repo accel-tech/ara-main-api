@@ -4,6 +4,6 @@ import { ReportCertificationsHandler } from "./handler";
 
 const router = Router();
 
-router.post("/", parseBody, ReportCertificationsHandler.addCertification);
+// router.post("/", parseBody, ReportCertificationsHandler.addCertification);
 
 export default router;
