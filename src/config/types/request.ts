@@ -4,13 +4,15 @@ import { Filter, FindOptions } from "mongodb";
 import { IUser } from "./user";
 import { IReport } from "./report";
 import { ICertification } from "./certification";
+import { IProject } from "./project";
 
 export interface xRequest extends Request {
   purpose?: string;
   user?: reqUser;
   document?:
     | { kind: "report"; object: IReport }
-    | { kind: "certification"; object: ICertification };
+    | { kind: "certification"; object: ICertification }
+    | { kind: "project"; object: IProject };
   session?: ClientSession;
   qOptions?: FindOptions;
   qFilter?: Filter<any>;

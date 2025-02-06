@@ -1,8 +1,8 @@
 import { ObjectId } from "mongodb";
 import { IDepartment } from "../../../config/types/department";
-import { RDProject } from "../../../config/types/rd-project";
 import { IReport, Report } from "../../../config/types/report";
 import ClientError from "../../../config/errors/ClientError";
+import { Project } from "../../../config/types/project";
 
 export function dateToWeekRange(date: Date): {
   startOfWeek: Date;
@@ -54,16 +54,13 @@ export const newReport = async (
 export const autoPopulateReportProjects = async (
   departmentId: ObjectId
 ): Promise<(IReport & { kind: "r&d" })["projects"]> => {
-  const activeProjects = await RDProject.find({ "department._id": departmentId, isActive: true });
+  const activeProjects = await Project.find({ "department._id": departmentId, isActive: true });
   return activeProjects.map((project) => ({
     _id: project._id,
     title: project.title,
     description: project.description,
     overseer: project.overseer,
-    completedTasks: [],
-    upcomingTasks: [],
-    particularChallenges: [],
-    issuesOnStandby: []
+    tasks: []
   }));
 };
 

@@ -1,17 +1,30 @@
 import { getModel } from "../utils/mongo";
 import { Doc } from "./doc";
-import { IRDProject, RDProjectData } from "./rd-project";
+
 import { RDMetrics } from "./rd-metrics";
-import { RDCertification } from "./rd-certification";
+import { ICertification } from "./certification";
 import { IDepartment } from "./department";
 import { RDNote } from "./rd-note";
+import { IProject } from "./project";
+import { IUser } from "./user";
+import { ObjectId } from "mongodb";
 
 interface RDReport {
   kind: "r&d";
-  projects: Array<Pick<IRDProject, "_id" | "title" | "description" | "overseer"> & RDProjectData>;
+  projects: Array<
+    Pick<IProject, "_id" | "title" | "description" | "overseer"> & {
+      tasks: Array<{
+        _id: ObjectId;
+        text: string;
+        dateAdded: Date;
+        addedBy: Pick<IUser, "_id" | "name" | "email">;
+        kind: "upcoming" | "completed" | "challenge" | "standby";
+      }>;
+    }
+  >;
   notes: Array<RDNote>;
   metrics: RDMetrics;
-  certifications: Array<RDCertification>;
+  certifications: Array<Omit<ICertification, "__v" | "department">>;
 }
 
 type ReportStatus = { status: "draft" } | { status: "published"; datePublished: Date };
