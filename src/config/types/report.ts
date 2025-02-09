@@ -11,17 +11,7 @@ import { ObjectId } from "mongodb";
 
 interface RDReport {
   kind: "r&d";
-  projects: Array<
-    Pick<IProject, "_id" | "title" | "description" | "overseer"> & {
-      tasks: Array<{
-        _id: ObjectId;
-        text: string;
-        dateAdded: Date;
-        addedBy: Pick<IUser, "_id" | "name" | "email">;
-        kind: "upcoming" | "completed" | "challenge" | "standby";
-      }>;
-    }
-  >;
+  projects: Array<Pick<IProject, "_id" | "title" | "description" | "overseer">>;
   notes: Array<RDNote>;
   metrics: RDMetrics;
   certifications: Array<Omit<ICertification, "__v" | "department">>;

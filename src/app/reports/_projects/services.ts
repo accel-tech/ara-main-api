@@ -1,8 +1,6 @@
 import ClientError from "../../../config/errors/ClientError";
-import { IProject, Project } from "../../../config/types/project";
+import { Project } from "../../../config/types/project";
 import { IReport, Report } from "../../../config/types/report";
-import { reqUser } from "../../../config/types/request";
-import assert from "assert";
 import { validateAddProject } from "./validation";
 import { ObjectId } from "mongodb";
 
@@ -32,8 +30,7 @@ export const addProject = async (report: IReport, data: unknown) => {
           _id: project._id,
           title: project.title,
           description: project.description,
-          overseer: project.overseer,
-          tasks: []
+          overseer: project.overseer
         }
       }
     }
@@ -47,7 +44,31 @@ export const addProject = async (report: IReport, data: unknown) => {
     _id: project._id,
     title: project.title,
     description: project.description,
-    overseer: project.overseer,
-    tasks: []
+    overseer: project.overseer
+  };
+};
+
+export const removeProject = async (projectId: string, report: IReport) => {
+  if (report.status !== "draft") {
+    throw new ClientError(`Can no longer edit report that is '${report.status}'`);
+  }
+
+  if (!report.projects.some((pro) => pro._id.toString() === projectId)) {
+    throw new ClientError(`Project not included in Report`);
+  }
+
+  const res = await Report.updateOne(
+    { _id: report._id },
+    {
+      $pull: { projects: { _id: new ObjectId(projectId) } }
+    }
+  );
+
+  if (res.matchedCount !== 1 || res.modifiedCount !== res.matchedCount) {
+    throw new Error("Failed to remove project from report");
+  }
+
+  return {
+    _id: projectId
   };
 };

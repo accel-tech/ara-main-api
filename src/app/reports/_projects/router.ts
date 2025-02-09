@@ -6,5 +6,11 @@ import { requiresReportAccess } from "../middleware/requiresReportAccess";
 const router = Router();
 
 router.post("/", requiresReportAccess("lead"), parseBody, ReportProjectsHandler.addProject);
+router.delete(
+  "/:projectId",
+  requiresReportAccess("lead"),
+  parseBody,
+  ReportProjectsHandler.removeProject
+);
 
 export default router;

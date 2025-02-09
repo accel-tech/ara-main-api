@@ -42,8 +42,7 @@ export const addProjectToLatestReport = async (project: IProject, session: Clien
     _id: project._id,
     title: project.title,
     description: project.title,
-    overseer: project.overseer,
-    tasks: []
+    overseer: project.overseer
   };
 
   const res = await Report.updateOne(

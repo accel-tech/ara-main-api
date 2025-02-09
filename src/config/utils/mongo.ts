@@ -9,7 +9,9 @@ import {
   OptionalUnlessRequiredId,
   ObjectId,
   BulkWriteOptions,
-  OptionalId
+  OptionalId,
+  AggregateOptions,
+  Document
 } from "mongodb";
 import { xRequestHandler } from "../types/request";
 import { Doc, OptionalIdNoVersion } from "../types/doc";
@@ -61,6 +63,10 @@ export function getModel<Type extends Doc, CreateType>(
 
     static findOne(filter: Filter<Type> = {}, options: FindOptions = {}) {
       return Collection.findOne(filter, options);
+    }
+
+    static aggregate(pipelines: Document[], options: AggregateOptions = {}) {
+      return Collection.aggregate(pipelines, options).toArray();
     }
 
     static async create(data: OptionalIdNoVersion<CreateType>, options: InsertOneOptions = {}) {

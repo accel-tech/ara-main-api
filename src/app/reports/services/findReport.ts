@@ -22,7 +22,7 @@ export const findReport = async (queryParams: Record<string, string>, user: reqU
     options.sort = { dateCreated: -1 };
   }
 
-  const reports = await getReports(filter, options, user);
+  const reports = await getReports(filter, options, user, true);
 
   return reports[0] || null;
 };

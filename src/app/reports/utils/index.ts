@@ -59,8 +59,7 @@ export const autoPopulateReportProjects = async (
     _id: project._id,
     title: project.title,
     description: project.description,
-    overseer: project.overseer,
-    tasks: []
+    overseer: project.overseer
   }));
 };
 
