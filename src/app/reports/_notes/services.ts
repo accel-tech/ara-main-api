@@ -4,6 +4,7 @@ import { IReport, Report } from "../../../config/types/report";
 import { validateAddNote, validateEditNote } from "./validation";
 import ClientError from "../../../config/errors/ClientError";
 import PermissionError from "../../../config/errors/PermissionError";
+import assert from "assert";
 
 export const addNote = async (report: IReport, data: unknown, user: reqUser) => {
   if (report.status !== "draft") {
@@ -60,8 +61,14 @@ export const deleteNote = async (report: IReport, noteId: string, user: reqUser)
   const note = report.notes.find((note) => note._id.toString() === noteId);
   if (!note) throw new ClientError(`Note '${noteId}' not found`);
 
-  if (note.addedBy._id.toString() !== user._id.toString()) {
-    throw new PermissionError("Only the author can delete this note");
+  assert(user.role === "basic");
+
+  const isLead = user.departmentAccess.some(
+    (dep) => dep._id.toString() === report.department._id.toString() && dep.access === "lead"
+  );
+
+  if (note.addedBy._id.toString() !== user._id.toString() && !isLead) {
+    throw new PermissionError("You cannot delete this note");
   }
 
   const res = await Report.updateOne({ _id: report._id }, { $pull: { notes: { _id: note._id } } });

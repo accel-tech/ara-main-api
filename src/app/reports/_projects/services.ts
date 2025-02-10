@@ -64,6 +64,8 @@ export const removeProject = async (projectId: string, report: IReport) => {
     }
   );
 
+  // delete tasks for the project or just leave them?
+
   if (res.matchedCount !== 1 || res.modifiedCount !== res.matchedCount) {
     throw new Error("Failed to remove project from report");
   }

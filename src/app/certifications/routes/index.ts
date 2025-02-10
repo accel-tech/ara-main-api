@@ -11,15 +11,12 @@ import { usesTransaction } from "../../../config/utils/mongo";
 import { requiresCertificationOwner } from "../middlewares/requiresCertificationOwner";
 
 const router = Router();
-router.use(checkAuth, requiresAuth);
+router.use(checkAuth, requiresAuth, requiresRoles("basic"));
 
-// router.get("/");
-// router.get("/:id");
-
+router.get("/", parseQuery, CertificationsHandler.getCertifications);
 router.post("/", parseBody, usesTransaction, CertificationsHandler.addCertification);
 router.patch(
   "/:id",
-  requiresRoles("basic"),
   requiresCertificationOwner,
   usesTransaction,
   parseBody,
@@ -27,7 +24,6 @@ router.patch(
 );
 router.delete(
   "/:id",
-  requiresRoles("basic"),
   requiresCertificationOwner,
   usesTransaction,
   CertificationsHandler.deleteCertification

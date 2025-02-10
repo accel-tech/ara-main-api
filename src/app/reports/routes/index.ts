@@ -24,10 +24,10 @@ router.post("/", parseBody, ReportHandlers.createReport);
 router.use("/:id/notes", requiresReportAccess("member", "lead"), reportNoteRouter);
 router.use("/:id/metrics", requiresReportAccess("lead"), reportMetricsRouter);
 router.use("/:id/projects", requiresReportAccess("lead", "member"), reportProjectsRouter);
-// router.use(
-//   "/:id/certifications",
-//   requiresReportAccess("member", "lead"),
-//   reportCertificationsRouter
-// );
+router.use(
+  "/:id/certifications",
+  requiresReportAccess("member", "lead"),
+  reportCertificationsRouter
+);
 
 export default router;
