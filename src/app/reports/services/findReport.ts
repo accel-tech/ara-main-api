@@ -25,6 +25,7 @@ export const findReport = async (queryParams: Record<string, string>, user: reqU
 
   if (afterDate) {
     filter["coveringDates.to"] = { $gt: new Date(afterDate) };
+    options["sort"] = { dateCreated: 1 };
   }
 
   const reports = await getReports(filter, options, user, true);
