@@ -6,6 +6,8 @@ import { httpHandler } from "../../../config/http/httpHandler";
 import { getReports } from "../services/getReports";
 import { findReport } from "../services/findReport";
 import { createReport } from "../services/createReport";
+import { editReport } from "../services/editReport";
+import assert from "assert";
 
 export class ReportHandlers {
   @httpHandler("Get Reports")
@@ -34,5 +36,11 @@ export class ReportHandlers {
   @httpHandler("Create Report")
   static createReport: handler = async (req) => {
     return await createReport(ensureValue(req.body), ensureValue(req.user));
+  };
+
+  @httpHandler("Edit Report")
+  static editReport: handler = async (req) => {
+    assert(req.document?.kind === "report");
+    return await editReport(ensureValue(req.document.object), ensureValue(req.body));
   };
 }

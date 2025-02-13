@@ -6,20 +6,25 @@ import { getReports } from "./getReports";
 
 export const findReport = async (queryParams: Record<string, string>, user: reqUser) => {
   const departmentId = queryParams.departmentId;
-  const date = queryParams.date;
+  const reportId = queryParams.reportId;
+
+  const afterDate = queryParams.afterDate;
+  const beforeDate = queryParams.beforeDate;
 
   const filter: Filter<IReport> = {};
-  const options: FindOptions = {};
+  const options: FindOptions = { limit: 1, sort: { dateCreated: -1 } };
 
   if (!departmentId) throw new ClientError(`Query parameter 'departmentId' must be provided`);
   filter["department._id"] = new ObjectId(departmentId);
 
-  if (date) {
-    filter["coveringDates.from"] = { $gte: new Date(date) };
-    filter["coveringDates.to"] = { $lte: new Date(date) };
-  } else {
-    // just get the latest
-    options.sort = { dateCreated: -1 };
+  if (reportId) filter["_id"] = new ObjectId(reportId);
+
+  if (beforeDate) {
+    filter["coveringDates.from"] = { $lt: new Date(beforeDate) };
+  }
+
+  if (afterDate) {
+    filter["coveringDates.to"] = { $gt: new Date(afterDate) };
   }
 
   const reports = await getReports(filter, options, user, true);

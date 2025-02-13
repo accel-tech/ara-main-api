@@ -28,26 +28,55 @@ export function dateToWeekRange(date: Date): {
 export const newReport = async (
   reportKind: IDepartment["reportKind"],
   data: Pick<IReport, "title" | "coveringDates" | "department">,
-  options?: { autoPopulateProjects?: boolean }
+  options?: {
+    autoPopulateProjects?: boolean;
+    autoPopulateCertifications?: boolean;
+    autoPopulateMetrics?: boolean;
+  }
 ) => {
   if (reportKind !== "r&d") throw new Error(`unexpected report type '${reportKind}'`);
+
+  let previousReport: IReport | null = null;
+  let projects: IReport["projects"] = [];
+  let certifications: IReport["certifications"] = [];
+  let metrics: IReport["metrics"] = getFreshMetrics();
+
+  if (options?.autoPopulateProjects) {
+    previousReport ??= await Report.findOne(
+      { "department._id": data.department._id, status: "published" },
+      { sort: { dateCreated: -1 } }
+    );
+    if (previousReport) projects = previousReport.projects;
+  }
+  if (options?.autoPopulateCertifications) {
+    previousReport ??= await Report.findOne(
+      { "department._id": data.department._id, status: "published" },
+      { sort: { dateCreated: -1 } }
+    );
+
+    if (previousReport) {
+      certifications = previousReport.certifications.filter((cert) => cert.status === "projected");
+    }
+  }
+  if (options?.autoPopulateMetrics) {
+    previousReport ??= await Report.findOne(
+      { "department._id": data.department._id, status: "published" },
+      { sort: { dateCreated: -1 } }
+    );
+    if (previousReport) metrics = previousReport.metrics;
+  }
 
   return await Report.create({
     title: data.title,
     kind: reportKind,
     department: data.department,
     coveringDates: data.coveringDates,
+    projects: projects,
+    metrics: metrics,
+    certifications: certifications,
     dateCreated: new Date(),
     status: "draft",
-    projects: !options?.autoPopulateProjects
-      ? []
-      : await autoPopulateReportProjects(data.department._id),
-    notes: [],
-    metrics: {
-      origins_cpu: 0,
-      origins_memory: 0
-    },
-    certifications: []
+    notes: []
   });
 };
 
@@ -92,3 +121,7 @@ export const validateReportCoveringDates = async (
   if (!overlap) return;
   throw new ClientError(`Report '${overlap._id}' already covering these dates`);
 };
+
+function getFreshMetrics(): IReport["metrics"] {
+  return { origins_cpu: 0, origins_memory: 0 };
+}

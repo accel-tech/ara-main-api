@@ -5,7 +5,12 @@ export const validateCreateReport = (data: unknown) => {
     departmentId: string;
     title: string;
     coveringDates: { from: Date; to: Date };
-    options?: { autoPopulateProjects?: boolean; ignoreDateConflicts?: boolean };
+    options?: {
+      autoPopulateProjects?: boolean;
+      autoPopulateCertifications?: boolean;
+      autoPopulateMetrics?: boolean;
+      ignoreDateConflicts?: boolean;
+    };
   }>({
     departmentId: Joi.string().required(),
     title: Joi.string().required(),
@@ -13,7 +18,12 @@ export const validateCreateReport = (data: unknown) => {
       from: Joi.date().required(),
       to: Joi.date().required()
     }).required(),
-    options: Joi.object({ autoPopulateProjects: Joi.boolean(), ignoreDateConflicts: Joi.boolean() })
+    options: Joi.object({
+      autoPopulateProjects: Joi.boolean(),
+      autoPopulateCertifications: Joi.boolean(),
+      autoPopulateMetrics: Joi.boolean(),
+      ignoreDateConflicts: Joi.boolean()
+    })
   });
 
   return schema.validateAsync(data);

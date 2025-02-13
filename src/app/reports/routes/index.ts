@@ -15,10 +15,11 @@ import reportProjectsRouter from "../_projects/router";
 const router = Router();
 router.use(checkAuth, requiresAuth);
 
-router.get("/", requiresRoles("admin"), ReportHandlers.getReports);
 router.get("/find", parseQuery, ReportHandlers.findReport);
-router.get("/:id", requiresRoles("admin"), ReportHandlers.getReport);
 router.post("/", parseBody, ReportHandlers.createReport);
+router.patch("/:id", requiresReportAccess("lead"), parseBody, ReportHandlers.editReport);
+router.get("/", requiresRoles("admin"), ReportHandlers.getReports);
+router.get("/:id", requiresRoles("admin"), ReportHandlers.getReport);
 
 //
 router.use("/:id/notes", requiresReportAccess("member", "lead"), reportNoteRouter);
