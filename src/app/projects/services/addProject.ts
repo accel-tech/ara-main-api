@@ -26,7 +26,8 @@ export const addProject = async (data: unknown, user: reqUser, session: ClientSe
       overseer: await validateOverseerId(fields.overseerId),
       department: { _id: departmentAccess._id, title: departmentAccess.title },
       isActive: true,
-      dateCreated: new Date()
+      dateCreated: new Date(),
+      writePolicy: fields.writePolicy
     },
     { session }
   );

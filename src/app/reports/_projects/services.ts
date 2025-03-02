@@ -17,7 +17,7 @@ export const addProject = async (report: IReport, data: unknown) => {
 
   const project = await Project.findOne(
     { _id: new ObjectId(fields.projectId), "department._id": report.department._id },
-    { projection: { _id: 1, title: 1, description: 1, overseer: 1 } }
+    { projection: { _id: 1, title: 1, description: 1, overseer: 1, writePolicy: 1 } }
   );
 
   if (!project) throw new ClientError(`Could not find project in this department`);
@@ -30,7 +30,8 @@ export const addProject = async (report: IReport, data: unknown) => {
           _id: project._id,
           title: project.title,
           description: project.description,
-          overseer: project.overseer
+          overseer: project.overseer,
+          writePolicy: project.writePolicy
         }
       }
     }

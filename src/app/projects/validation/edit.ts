@@ -6,11 +6,13 @@ export const validateEditProject = (data: unknown) => {
     description?: string;
     overseerId?: string;
     isActive?: boolean;
+    writePolicy?: "overseerOnly" | "allDepartment";
   }>({
     title: Joi.string(),
     description: Joi.string(),
     overseerId: Joi.string(),
-    isActive: Joi.boolean()
+    isActive: Joi.boolean(),
+    writePolicy: Joi.string().valid("overseerOnly", "allDepartment")
   });
   return schema.validateAsync(data);
 };

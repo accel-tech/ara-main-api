@@ -17,8 +17,13 @@ export const editProject = async (project: IProject, data: unknown, session: Cli
   if (fields.description && fields.description !== project.description) {
     patchData.$set = { ...patchData.$set, description: fields.description };
   }
+
   if (fields.overseerId && fields.overseerId !== project.overseer._id.toString()) {
     patchData.$set = { ...patchData.$set, overseer: await validateOverseerId(fields.overseerId) };
+  }
+
+  if (fields.writePolicy && fields.writePolicy !== project.writePolicy) {
+    patchData.$set = { ...patchData.$set, writePolicy: fields.writePolicy };
   }
 
   if (typeof fields.isActive === "boolean") {

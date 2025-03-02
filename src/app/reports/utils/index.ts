@@ -88,7 +88,8 @@ export const autoPopulateReportProjects = async (
     _id: project._id,
     title: project.title,
     description: project.description,
-    overseer: project.overseer
+    overseer: project.overseer,
+    writePolicy: project.writePolicy
   }));
 };
 

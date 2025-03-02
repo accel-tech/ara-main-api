@@ -42,7 +42,8 @@ export const addProjectToLatestReport = async (project: IProject, session: Clien
     _id: project._id,
     title: project.title,
     description: project.title,
-    overseer: project.overseer
+    overseer: project.overseer,
+    writePolicy: project.writePolicy
   };
 
   const res = await Report.updateOne(

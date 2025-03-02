@@ -18,6 +18,8 @@ export interface IProject extends Doc {
     title: string;
   };
   dateClosed?: Date;
+  writePolicy: "overseerOnly" | "allDepartment";
+  // additionalWriters?: { _id: ObjectId; name: string; email: string }[];
 }
 
 export const Project = getModel<IProject, IProject>("projects");

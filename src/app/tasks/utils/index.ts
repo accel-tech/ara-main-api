@@ -47,7 +47,7 @@ export const validateProjectTaskWritable = async (args: {
 }) => {
   const project = await Project.findOne(
     { _id: new ObjectId(args.projectId) },
-    { projection: { _id: 1, overseer: 1 } }
+    { projection: { _id: 1, overseer: 1, writePolicy: 1 } }
   );
 
   if (!project) throw new ClientError(`Project not found`);
@@ -62,6 +62,17 @@ export const validateProjectTaskWritable = async (args: {
     isAuthorized = args.departmentAccess.some(
       (dep) => dep._id.toString() === project.department._id.toString() && dep.access === "lead"
     );
+  }
+
+  if (!isAuthorized) {
+    // he is part of department and project.writePolicy is 'allDepartment'
+    isAuthorized =
+      project.writePolicy === "allDepartment" &&
+      args.departmentAccess.some(
+        (dep) =>
+          dep._id.toString() === project.department._id.toString() &&
+          ["lead", "member"].includes(dep.access)
+      );
   }
 
   if (!isAuthorized) {

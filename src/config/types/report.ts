@@ -11,7 +11,7 @@ import { ObjectId } from "mongodb";
 
 interface RDReport {
   kind: "r&d";
-  projects: Array<Pick<IProject, "_id" | "title" | "description" | "overseer">>;
+  projects: Array<Pick<IProject, "_id" | "title" | "description" | "overseer" | "writePolicy">>;
   notes: Array<RDNote>;
   metrics: RDMetrics;
   certifications: Array<Omit<ICertification, "__v" | "department">>;
