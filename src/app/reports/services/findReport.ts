@@ -28,7 +28,10 @@ export const findReport = async (queryParams: Record<string, string>, user: reqU
     options["sort"] = { dateCreated: 1 };
   }
 
-  const reports = await getReports(filter, options, user, true);
+  const reports = await getReports(filter, options, user, {
+    populateMetrics: true,
+    populateProjectTasks: true
+  });
 
   return reports[0] || null;
 };

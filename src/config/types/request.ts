@@ -6,6 +6,7 @@ import { IReport } from "./report";
 import { ICertification } from "./certification";
 import { IProject } from "./project";
 import { ITask } from "./task";
+import { IMetric } from "./metrics";
 
 export interface xRequest extends Request {
   purpose?: string;
@@ -14,7 +15,8 @@ export interface xRequest extends Request {
     | { kind: "report"; object: IReport }
     | { kind: "certification"; object: ICertification }
     | { kind: "project"; object: IProject }
-    | { kind: "task"; object: ITask };
+    | { kind: "task"; object: ITask }
+    | { kind: "metric"; object: IMetric };
   session?: ClientSession;
   qOptions?: FindOptions;
   qFilter?: Filter<any>;

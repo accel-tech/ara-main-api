@@ -35,12 +35,20 @@ export class ReportHandlers {
 
   @httpHandler("Create Report")
   static createReport: handler = async (req) => {
-    return await createReport(ensureValue(req.body), ensureValue(req.user));
+    return await createReport(
+      ensureValue(req.body),
+      ensureValue(req.user),
+      ensureValue(req.session)
+    );
   };
 
   @httpHandler("Edit Report")
   static editReport: handler = async (req) => {
     assert(req.document?.kind === "report");
-    return await editReport(ensureValue(req.document.object), ensureValue(req.body));
+    return await editReport(
+      ensureValue(req.document.object),
+      ensureValue(req.body),
+      ensureValue(req.session)
+    );
   };
 }

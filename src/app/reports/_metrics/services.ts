@@ -1,21 +1,16 @@
-import { IReport, Report } from "../../../config/types/report";
-import { validateEditMetrics } from "./validation";
+import { IReport } from "../../../config/types/report";
 import ClientError from "../../../config/errors/ClientError";
+import { editMetric } from "../../metrics/services/editMetric";
+import { Metric } from "../../../config/types/metrics";
+import assert from "assert";
 
 export const editMetrics = async (report: IReport, data: unknown) => {
   if (report.status !== "draft") {
     throw new ClientError(`Can no longer edit report that is '${report.status}'`);
   }
 
-  const fields = await validateEditMetrics(data);
+  const metric = await Metric.findOne({ _id: report.metrics._id });
+  assert(!!metric);
 
-  const newMetrics = { ...report.metrics, ...fields }; // revalidate?
-
-  const res = await Report.updateOne({ _id: report._id }, { $set: { metrics: newMetrics } });
-
-  if (res.matchedCount !== 1 || res.modifiedCount !== res.matchedCount) {
-    throw new Error("Failed to edit metrics");
-  }
-
-  return fields;
+  return await editMetric(metric, data);
 };

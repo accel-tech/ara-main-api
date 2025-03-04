@@ -1,19 +1,16 @@
 import { getModel } from "../utils/mongo";
 import { Doc } from "./doc";
-
-import { RDMetrics } from "./rd-metrics";
 import { ICertification } from "./certification";
 import { IDepartment } from "./department";
 import { RDNote } from "./rd-note";
 import { IProject } from "./project";
-import { IUser } from "./user";
-import { ObjectId } from "mongodb";
+import { IMetric } from "./metrics";
 
 interface RDReport {
   kind: "r&d";
   projects: Array<Pick<IProject, "_id" | "title" | "description" | "overseer" | "writePolicy">>;
   notes: Array<RDNote>;
-  metrics: RDMetrics;
+  metrics: Pick<IMetric, "_id">;
   certifications: Array<Omit<ICertification, "__v" | "department">>;
 }
 
