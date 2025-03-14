@@ -12,7 +12,10 @@ import assert from "assert";
 export class ReportHandlers {
   @httpHandler("Get Reports")
   static getReports: handler = async (req) => {
-    return await getReports(req.qFilter, req.qOptions, ensureValue(req.user));
+    return await getReports(req.qFilter, req.qOptions, ensureValue(req.user), {
+      populateMetrics: Boolean(req.query?._populateMetrics),
+      populateProjectTasks: Boolean(req.query?._populateProjectTasks)
+    });
   };
 
   @httpHandler("Get Report")

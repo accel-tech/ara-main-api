@@ -14,6 +14,11 @@ export const getReports = async (
     populateMetrics?: boolean;
   }
 ) => {
+  if (!options.limit) {
+    options ||= {};
+    options.limit = 20; // default limit
+  }
+
   let reports = await Report.find(processReportFilters(filter, user), options);
 
   if (extraOptions?.populateProjectTasks) {

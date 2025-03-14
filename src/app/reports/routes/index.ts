@@ -25,7 +25,7 @@ router.patch(
   usesTransaction,
   ReportHandlers.editReport
 );
-router.get("/", requiresRoles("admin"), ReportHandlers.getReports);
+router.get("/", parseQuery, ReportHandlers.getReports);
 router.get("/:id", requiresRoles("admin"), ReportHandlers.getReport);
 
 //
