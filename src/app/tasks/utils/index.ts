@@ -47,7 +47,7 @@ export const validateProjectTaskWritable = async (args: {
 }) => {
   const project = await Project.findOne(
     { _id: new ObjectId(args.projectId) },
-    { projection: { _id: 1, overseer: 1, writePolicy: 1 } }
+    { projection: { _id: 1, overseer: 1, writePolicy: 1, department: 1 } }
   );
 
   if (!project) throw new ClientError(`Project not found`);
